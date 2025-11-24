@@ -4,9 +4,9 @@ import time
 import base64
 
 def hello_juiz(request):
-    # 1. Configuração (Igual ao seu script)
+    # 1. Configuração
     BASE_URL = "https://ce.judge0.com"
-    codigo_fonte = "print('Ola OBI via Django')" # Mudamos o texto para provar que é novo
+    codigo_fonte = "print('Ola OBI via Django')" 
     codigo_b64 = base64.b64encode(codigo_fonte.encode('utf-8')).decode('utf-8')
     
     payload = {

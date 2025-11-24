@@ -3,8 +3,6 @@ import time
 import base64
 
 # URL da API pública do Judge0
-# Nota: Para produção, recomenda-se usar o RapidAPI ou hospedar o seu,
-# mas para este teste rápido, usaremos o endpoint público direto.
 BASE_URL = "https://ce.judge0.com"
 
 def testar_juiz():
@@ -14,14 +12,14 @@ def testar_juiz():
     # Vamos testar um código em Python (ID da linguagem 71)
     codigo_fonte = "print('Ola OBI')"
     
-    # Codificando para base64 (padrão do Judge0 para evitar erros com caracteres especiais)
+    # Codificando para base64 (padrão do Judge0)
     codigo_b64 = base64.b64encode(codigo_fonte.encode('utf-8')).decode('utf-8')
 
     # 2. Preparar a submissão
     payload = {
         "source_code": codigo_fonte,
         "language_id": 71, # 71 é Python 3.8.1 no Judge0
-        "stdin": "",       # Entrada padrão (vazia neste exemplo)
+        "stdin": "",       # Entrada padrão
         "expected_output": "Ola OBI" # O que esperamos que saia
     }
 
@@ -40,7 +38,6 @@ def testar_juiz():
         return
 
     # 3. Esperar o resultado (Polling)
-    # O juiz demora uns segundos para compilar e rodar. Precisamos perguntar "já acabou?"
     print("2. Aguardando resultado...")
     
     status = "Processing"
