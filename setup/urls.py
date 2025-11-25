@@ -16,9 +16,18 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from api.views import hello_juiz
+# Importamos a View lá da pasta 'api'
+from api.views import ListaProblemas, DetalheProblema, SubmeterSolucao
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('teste-juiz/', hello_juiz),
+
+    # Quando acessar /problemas/, mostre a lista
+    path('problemas/', ListaProblemas.as_view()),
+
+    # Nova rota: O <slug:slug> é uma variável na URL
+    # Exemplo: http://site.com/problemas/soma-simples/
+    path('problemas/<slug:slug>/', DetalheProblema.as_view()),
+
+    path('problemas/<slug:slug>/submeter/', SubmeterSolucao.as_view()),
 ]
