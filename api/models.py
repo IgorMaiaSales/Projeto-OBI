@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 class Problema(models.Model):
     # Identificação
@@ -34,7 +35,8 @@ class CasoDeTeste(models.Model):
     
 class Submissao(models.Model):
     # Quem e O Que
-    # Nota: No MVP, se não tiver login ainda, podemos deixar usuario como null ou ignorar por enquanto
+    # Usuário
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     # Mas vamos deixar preparado.
     problema = models.ForeignKey(Problema, on_delete=models.CASCADE)
     codigo = models.TextField()

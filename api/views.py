@@ -1,17 +1,24 @@
-from django.http import JsonResponse
+import json
 import requests
 import time
 import base64
 
-from rest_framework import generics
-from .models import Problema
-from .serializers import ProblemaSerializer
+from django.http import JsonResponse
+from django.shortcuts import get_object_or_404
+from django.contrib.auth.models import User
 
+from rest_framework import generics, status
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated, AllowAny
+
+from .models import Problema, Submissao
+from .serializers import ProblemaSerializer, SubmissaoSerializer, UserSerializer
+
+# --- View de Teste (Pode manter para debug) ---
 def hello_juiz(request):
-    # 1. Configuração
     BASE_URL = "https://ce.judge0.com"
     codigo_fonte = "print('Ola OBI via Django')" 
-    codigo_b64 = base64.b64encode(codigo_fonte.encode('utf-8')).decode('utf-8')
     
     payload = {
         "source_code": codigo_fonte,
@@ -20,105 +27,128 @@ def hello_juiz(request):
         "expected_output": "Ola OBI via Django"
     }
 
-    # 2. Envia para o Juiz
     try:
         response = requests.post(f"{BASE_URL}/submissions/?base64_encoded=false&wait=false", json=payload)
         token = response.json().get("token")
     except Exception as e:
         return JsonResponse({"erro": str(e)}, status=500)
 
-    # 3. Espera o resultado (Polling simples)
-    status = "Processing"
+    status_desc = "Processing"
     resultado_final = {}
     
-    while status in ["Processing", "In Queue"]:
-        time.sleep(1) # Espera 1 seg
+    while status_desc in ["Processing", "In Queue"]:
+        time.sleep(1)
         res = requests.get(f"{BASE_URL}/submissions/{token}?base64_encoded=false")
         resultado_final = res.json()
-        status = resultado_final["status"]["description"]
+        status_desc = resultado_final["status"]["description"]
 
-    # 4. Retorna o JSON para o navegador
     return JsonResponse({
         "mensagem": "Teste realizado com sucesso!",
-        "status_juiz": status,
+        "status_juiz": status_desc,
         "saida_codigo": resultado_final.get("stdout"),
         "tempo": resultado_final.get("time")
     })
 
-# Busca os problemas e lista na página
+# --- Listagem e Detalhes de Problemas ---
 class ListaProblemas(generics.ListAPIView):
     queryset = Problema.objects.filter(ativo=True)
     serializer_class = ProblemaSerializer
 
-# Busca apenas um problema usando o 'slug'
 class DetalheProblema(generics.RetrieveAPIView):
     queryset = Problema.objects.filter(ativo=True)
     serializer_class = ProblemaSerializer
-    lookup_field = 'slug' # Vamos buscar pelo slug (ex: soma-simples)
+    lookup_field = 'slug'
 
-
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework import status
-from django.shortcuts import get_object_or_404
-from .models import Problema, Submissao
-from .serializers import SubmissaoSerializer
-import requests
-import base64
-import time
-
+# --- A LÓGICA DE SUBMISSÃO (CORRIGIDA) ---
 class SubmeterSolucao(APIView):
+    permission_classes = [IsAuthenticated] 
+
     def post(self, request, slug):
-        # 1. Achar o problema que o aluno quer resolver
+        # 1. Achar o problema
         problema = get_object_or_404(Problema, slug=slug)
         codigo = request.data.get('codigo')
         
-        # 2. Pegar o PRIMEIRO caso de teste (Para o MVP, vamos testar só 1 por enquanto)
-        # No futuro, faremos um loop por todos os casos
+        # 2. Pegar o caso de teste
         caso_teste = problema.casos_teste.first()
-        
         if not caso_teste:
             return Response({"erro": "Este problema não tem casos de teste cadastrados!"}, status=400)
 
-        # 3. Preparar dados para o Judge0
-        # Codifica tudo em base64 para evitar erros com quebras de linha
-        source_b64 = base64.b64encode(codigo.encode('utf-8')).decode('utf-8')
-        stdin_b64 = base64.b64encode(caso_teste.entrada.encode('utf-8')).decode('utf-8')
-        expected_b64 = base64.b64encode(caso_teste.saida_esperada.encode('utf-8')).decode('utf-8')
+        # 3. Preparar dados (Base64)
+        try:
+            source_b64 = base64.b64encode(codigo.encode('utf-8')).decode('utf-8')
+            stdin_b64 = base64.b64encode((caso_teste.entrada or "").encode('utf-8')).decode('utf-8')
+            expected_b64 = base64.b64encode((caso_teste.saida_esperada or "").encode('utf-8')).decode('utf-8')
+        except Exception as e:
+            return Response({"erro": "Erro ao codificar dados para envio."}, status=400)
 
         payload = {
             "source_code": source_b64,
-            "language_id": 71, # Python (Judge0 ID)
+            "language_id": 71, # Python (71)
             "stdin": stdin_b64,
             "expected_output": expected_b64
         }
         
-        # 4. Enviar para o Juiz
+        # URL do Judge0 (Certifique-se que esta URL está correta para seu plano)
         url = "https://ce.judge0.com/submissions/?base64_encoded=true&wait=true" 
-        # Nota: usaremos 'wait=true' para o Django esperar a resposta na mesma hora (mais simples pro MVP)
         
+        # 4. Enviar para o Juiz com TRATAMENTO DE ERRO ROBUSTO
         try:
-            print(f"Enviando para Judge0: {payload}") # Debug 1
-            resposta_judge = requests.post(url, json=payload)
-            print(f"Status HTTP Judge0: {resposta_judge.status_code}") # Debug 2
-            print(f"Resposta bruta Judge0: {resposta_judge.text}") # Debug 3
+            print(f"--- Submetendo {slug} para Judge0 ---")
             
-            res = resposta_judge.json()
-        except Exception as e:
-            print(f"ERRO CRÍTICO NO BACKEND: {e}") # Vai mostrar o erro no terminal
-            return Response({"erro": f"Falha interna: {str(e)}"}, status=500)
+            resposta_judge = requests.post(
+                url, 
+                json=payload, 
+                headers={'Content-Type': 'application/json'}
+            )
+            
+            print(f"Status HTTP Judge0: {resposta_judge.status_code}") 
 
-        # 5. Ler o veredito
-        status_juiz = res.get('status', {}).get('description', 'Erro')
+            # AQUI ESTA A CORREÇÃO PRINCIPAL:
+            # Se der erro 520 (Cloudflare) ou 500/404, isso levanta exceção antes de quebrar o JSON
+            resposta_judge.raise_for_status() 
+
+            # Só tenta ler JSON se o status for OK (200/201)
+            res = resposta_judge.json()
+
+        except requests.exceptions.HTTPError as err:
+            # Captura erros de servidor externo (ex: Cloudflare 520)
+            print(f"ERRO API JUDGE0: {err}")
+            print(f"Conteúdo HTML/Texto recebido: {resposta_judge.text[:200]}...") # Loga o erro real
+            
+            msg = "Erro na comunicação com o avaliador."
+            if resposta_judge.status_code == 520:
+                msg = "O sistema de avaliação está instável momentaneamente (Erro 520)."
+            
+            return Response({"erro": msg, "detalhes": str(err)}, status=502)
+
+        except json.JSONDecodeError:
+            # Captura caso a API retorne 200 OK mas mande HTML (erro comum de proxy)
+            print("ERRO PARSE JSON: A API retornou HTML em vez de JSON.")
+            return Response({"erro": "Resposta inválida do avaliador."}, status=500)
+
+        except Exception as e:
+            # Erro genérico (conexão, etc)
+            print(f"ERRO GERAL BACKEND: {e}") 
+            return Response({"erro": "Falha interna no servidor."}, status=500)
+
+        # 5. Ler o veredito (Se chegou aqui, temos um JSON válido)
+        status_juiz = res.get('status', {}).get('description', 'Unknown Error')
         tempo = res.get('time')
 
-        # 6. Salvar no Banco de Dados (Histórico)
+        # 6. Salvar no Banco de Dados
         submissao = Submissao.objects.create(
+            usuario=request.user,
             problema=problema,
             codigo=codigo,
             status=status_juiz,
             tempo=tempo if tempo else 0.0
         )
 
-        # 7. Retornar para o React
+        # 7. Retornar
         return Response(SubmissaoSerializer(submissao).data)
+
+# --- Registro de Usuário ---
+class RegistrarUsuario(generics.CreateAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    permission_classes = [AllowAny]

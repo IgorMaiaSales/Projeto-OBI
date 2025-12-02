@@ -17,7 +17,12 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 # Importamos a View lá da pasta 'api'
-from api.views import ListaProblemas, DetalheProblema, SubmeterSolucao
+from api.views import ListaProblemas, DetalheProblema, SubmeterSolucao, RegistrarUsuario
+# Importação da biblioteca de Token
+from rest_framework_simplejwt.views import (
+    TokenObtainPairView,
+    TokenRefreshView,
+)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -30,4 +35,11 @@ urlpatterns = [
     path('problemas/<slug:slug>/', DetalheProblema.as_view()),
 
     path('problemas/<slug:slug>/submeter/', SubmeterSolucao.as_view()),
+
+    # NOVAS ROTAS DE AUTENTICAÇÃO
+    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'), # Login
+    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'), # Renovar login
+
+    # Rota para Registro
+    path('api/register/', RegistrarUsuario.as_view(), name='register'),
 ]
