@@ -20,7 +20,11 @@ function Resolver() {
   }, [slug]);
 
   const submeter = async () => {
-    const token = localStorage.getItem('access_token');
+    const token = localStorage.getItem('access_token'); 
+    
+    // Debug para ver se o token existe antes de enviar
+    console.log("Token sendo enviado:", token); 
+
     if (!token) {
       alert("Você precisa estar logado para enviar soluções!");
       return;
@@ -33,7 +37,7 @@ function Resolver() {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
+          'Authorization': `Token ${token}`
         },
         body: JSON.stringify({ codigo: codigo })
       });
