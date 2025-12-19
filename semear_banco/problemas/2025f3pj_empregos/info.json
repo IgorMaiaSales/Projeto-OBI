@@ -1,0 +1,29 @@
+{
+  "titulo": "Empregos de Júlio",
+  "slug": "empregos",
+  "ano": 2025,
+  "fase": 3,
+  "nivel": "J",
+  "time_limit": 1000,
+  "enunciado": "<p>Júlio tem N dias para trabalhar. Em cada dia i, ganha A_i como entregador ou B_i como segurança.</p><p><b>Bônus:</b> Após trabalhar K dias (não consecutivos) como segurança, ele passa a ganhar o <b>dobro</b> (2*B_i) em qualquer turno futuro como segurança.</p><p>Determine o lucro máximo possível.</p>",
+  "entrada": "Linha 1: N e K.\nLinha 2: Valores A (Entregador).\nLinha 3: Valores B (Segurança).",
+  "saida": "O lucro máximo possível.",
+  "restricoes": "<ul><li>1 &le; N &le; 100.000</li><li>0 &le; K &le; N</li><li>Valores até 1.000.000</li></ul>",
+  "exemplos": [
+    {
+      "input": "5 0\n30 40 50 70 30\n10 30 20 20 40",
+      "output": "260",
+      "explanation": "Como K=0, ele ganha o dobro na segurança desde o início. Melhor escolha: Entregador (dias 1, 4), Segurança (dias 2, 3, 5)."
+    },
+    {
+      "input": "5 1\n30 40 50 70 30\n10 30 20 20 40",
+      "output": "240",
+      "explanation": "K=1. Ele ganha dobro na segurança após o primeiro dia nela."
+    },
+    {
+      "input": "5 2\n30 40 25 15 20\n10 10 10 10 10",
+      "output": "130",
+      "explanation": null
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "titulo": "Fotos de Relíquias",
+  "slug": "fotos",
+  "ano": 2025,
+  "fase": 3,
+  "nivel": "J",
+  "time_limit": 1000,
+  "enunciado": "<p>Jonas quer tirar uma foto usando um intervalo contíguo de seções da paisagem. A paisagem é descrita por um vetor A onde A_i=1 é destaque e A_i=0 é normal.</p><p>A foto (intervalo l a r) é válida se contiver <b>exatamente uma</b> seção de destaque.</p><p>Determine quantos pares (l, r) válidos existem.</p>",
+  "entrada": "Linha 1: N.\nLinha 2: Vetor A (0s e 1s).",
+  "saida": "Número de modos (pares l,r) de tirar a foto.",
+  "restricoes": "<ul><li>1 &le; N &le; 100.000</li><li>Recomendado usar inteiros de 64 bits para a resposta.</li></ul>",
+  "exemplos": [
+    {
+      "input": "5\n1 0 0 1 0",
+      "output": "9",
+      "explanation": "Os pares válidos são: (1,1), (1,2), (1,3), (2,4), (2,5), (3,4), (3,5), (4,4) e (4,5)."
+    },
+    {
+      "input": "12\n0 0 0 1 0 0 0 0 0 0 0 0",
+      "output": "36",
+      "explanation": "Existe apenas uma seção de destaque, satisfazendo a subtarefa 4."
+    }
+  ]
+}

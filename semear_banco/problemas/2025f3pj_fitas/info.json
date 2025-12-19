@@ -1,0 +1,24 @@
+{
+  "titulo": "Fitas Verde-amarelas",
+  "slug": "fitas",
+  "ano": 2025,
+  "fase": 3,
+  "nivel": "J",
+  "time_limit": 1000,
+  "enunciado": "<p>Ada precisa consertar um mapa N x M (Terra '#' e Mar '.') usando fitas verdes e amarelas.</p><ul><li><b>Terra</b> deve ser coberta, <b>Mar</b> descoberto.</li><li><b>Verde:</b> Apenas horizontal.</li><li><b>Amarela:</b> Apenas vertical.</li><li>Fita amarela não pode ser vizinha de fita verde (lados compartilhados).</li></ul><p>Qual o número mínimo de fitas necessárias?</p>",
+  "entrada": "Linha 1: N e M.\nPróximas N linhas: mapa com '#' e '.'.",
+  "saida": "Número mínimo de fitas.",
+  "restricoes": "<ul><li>1 &le; N, M &le; 1000</li></ul>",
+  "exemplos": [
+    {
+      "input": "4 7\n##..###\n..#...#\n#####.#\n#..#..#",
+      "output": "8",
+      "explanation": "Exemplo ilustrado no enunciado. 8 fitas é o mínimo possível."
+    },
+    {
+      "input": "6 5\n###\n.###\n..###\n###",
+      "output": "3",
+      "explanation": "Satisfaz restrições da subtarefa 5."
+    }
+  ]
+}

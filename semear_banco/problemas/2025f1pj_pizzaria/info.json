@@ -1,0 +1,29 @@
+{
+  "titulo": "Pizzaria",
+  "slug": "pizzaria",
+  "ano": 2025,
+  "fase": 1,
+  "nivel": "J",
+  "time_limit": 1000,
+  "enunciado": "<p>A mãe de Larissa decidiu comemorar o aniversário da filha em uma pizzaria. Nessa pizzaria, existem pizzas de dois tamanhos: uma pizza grande possui 8 fatias, enquanto que uma pizza pequena possui 4 fatias.</p><p>A mãe de Larissa já fez um pedido indicando quantas pizzas de cada tamanho ela vai comprar. Larissa gostaria de saber quantos amigos ela pode convidar de modo que todos os convidados (ela, sua mãe e seus amigos) recebam uma fatia de pizza.</p><p>Sua tarefa é: dadas a quantidade de pizzas grandes e a quantidade de pizzas pequenas que a mãe de Larissa pediu, calcule o número máximo de amigos que Larissa pode convidar para a festa, ou seja, o número de fatias que sobram após reservar uma fatia para Larissa e uma para sua mãe.</p>",
+  "entrada": "A entrada possui duas linhas. A primeira linha contém um inteiro G, indicando a quantidade de pizzas grandes. A segunda linha contém um inteiro P, indicando a quantidade de pizzas pequenas.",
+  "saida": "Seu programa deverá imprimir uma única linha contendo um único inteiro: o número máximo de amigos que Larissa pode convidar.",
+  "restricoes": "<ul><li>1 &le; G &le; 10</li><li>1 &le; P &le; 10</li></ul>",
+  "exemplos": [
+    {
+      "input": "2\n3",
+      "output": "26",
+      "explanation": "Temos 2 pizzas grandes (16 fatias) e 3 pequenas (12 fatias). Total = 28 fatias. Reservando para Larissa e a mãe (2), sobram 26."
+    },
+    {
+      "input": "7\n4",
+      "output": "70",
+      "explanation": null
+    },
+    {
+      "input": "1\n2",
+      "output": "14",
+      "explanation": null
+    }
+  ]
+}

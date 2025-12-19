@@ -1,15 +1,28 @@
 from django.contrib import admin
-from .models import Problema, CasoDeTeste
+from .models import Problema, ExemploDeProblema, CasoDeTeste
 
-# Configuração para editar os testes DENTRO da página do problema
+class ExemploInline(admin.StackedInline):
+    """Permite editar os exemplos didáticos (com explicação)"""
+    model = ExemploDeProblema
+    extra = 0
+    verbose_name = "Exemplo do Enunciado"
+    verbose_name_plural = "Exemplos do Enunciado (Visíveis)"
+
 class CasoDeTesteInline(admin.TabularInline):
+    """Lista os arquivos de teste usados pelo Juiz (apenas leitura recomendada)"""
     model = CasoDeTeste
-    extra = 1 # Começa com 1 campo vazio extra
+    extra = 0
+    verbose_name = "Arquivo de Teste (Juiz)"
+    verbose_name_plural = "Arquivos de Teste (Ocultos)"
+    
+    # Exibe os caminhos, mas evita que editem manualmente sem saber o que fazem
+    readonly_fields = ('caminho_entrada', 'caminho_saida') 
+    can_delete = True
 
 class ProblemaAdmin(admin.ModelAdmin):
-    inlines = [CasoDeTesteInline] # Adiciona os testes aqui
-    list_display = ('titulo', 'nivel', 'ativo') # O que aparece na lista
-    prepopulated_fields = {"slug": ("titulo",)} # Preenche o slug automático
+    inlines = [ExemploInline, CasoDeTesteInline]
+    list_display = ('titulo', 'slug', 'nivel', 'ativo')
+    search_fields = ('titulo', 'slug')
+    prepopulated_fields = {"slug": ("titulo",)}
 
-# Registra no painel
 admin.site.register(Problema, ProblemaAdmin)

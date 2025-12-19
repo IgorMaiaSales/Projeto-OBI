@@ -1,0 +1,24 @@
+{
+  "titulo": "Feirinha de Artesanato",
+  "slug": "feirinha",
+  "ano": 2025,
+  "fase": 2,
+  "nivel": "J",
+  "time_limit": 1000,
+  "enunciado": "<p>Existem objetos de tipo 1 e tipo 2 com preços variados. Clientes visitam a barraca:</p><ul><li><b>Decidido:</b> Compra o objeto do tipo desejado com menor preço.</li><li><b>Indeciso:</b> Compra o objeto de menor preço geral (desempate pelo menor tipo).</li></ul><p>Calcule o valor total arrecadado após C clientes.</p>",
+  "entrada": "1. N (objetos)\n2. Tipos dos objetos\n3. Preços dos objetos\n4. C (clientes)\n5. Tipos desejados pelos clientes (0 se indeciso)",
+  "saida": "Um único inteiro: o total em reais arrecadado.",
+  "restricoes": "<ul><li>1 &le; N &le; 100.000</li><li>1 &le; C &le; 10.000</li><li>Preços &le; 10.000</li></ul>",
+  "exemplos": [
+    {
+      "input": "7\n2 1 1 1 2 2 2\n34 81 12 3 90 3 10000\n6\n0 1 0 1 2 1",
+      "output": "133",
+      "explanation": null
+    },
+    {
+      "input": "7\n1 1 2 1 2 2 1\n7 3 4 1 8 5 10\n8\n0 2 0 0 1 1 1 1",
+      "output": "30",
+      "explanation": null
+    }
+  ]
+}

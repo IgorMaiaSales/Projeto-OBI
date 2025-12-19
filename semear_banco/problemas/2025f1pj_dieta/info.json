@@ -1,0 +1,24 @@
+{
+  "titulo": "Dieta",
+  "slug": "dieta",
+  "ano": 2025,
+  "fase": 1,
+  "nivel": "J",
+  "time_limit": 1000,
+  "enunciado": "<p>O gato Garfield está de dieta. John definiu um limite M de calorias diárias.</p><p>Para calcular as calorias já consumidas nas refeições, usa-se a conversão:<ul><li>1g Proteína = 4 calorias</li><li>1g Gordura = 9 calorias</li><li>1g Carboidrato = 4 calorias</li></ul></p><p>Dada a lista de refeições que Garfield já fez, ajude o gato a saber qual o máximo de calorias que ele AINDA pode consumir sem exceder o limite M.</p>",
+  "entrada": "A primeira linha contém N (refeições feitas) e M (limite total). Cada uma das N linhas seguintes contém três inteiros: P, G e C (gramas de proteínas, gorduras e carboidratos).",
+  "saida": "Imprima um único inteiro: a quantidade máxima de calorias que Garfield ainda pode consumir (M - Calorias Consumidas).",
+  "restricoes": "<ul><li>1 &le; N &le; 30</li><li>1 &le; M &le; 300.000</li><li>0 < P, G, C < 500</li></ul>",
+  "exemplos": [
+    {
+      "input": "3 2000\n65 15 20\n40 20 25\n50 10 35",
+      "output": "655",
+      "explanation": "Calcula-se o total calórico de cada uma das 3 refeições e subtrai-se do limite de 2000."
+    },
+    {
+      "input": "1 3700\n50 300 200",
+      "output": "0",
+      "explanation": null
+    }
+  ]
+}

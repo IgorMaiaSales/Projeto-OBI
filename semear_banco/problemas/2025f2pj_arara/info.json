@@ -1,0 +1,29 @@
+{
+  "titulo": "Arara!",
+  "slug": "arara",
+  "ano": 2025,
+  "fase": 2,
+  "nivel": "J",
+  "time_limit": 1000,
+  "enunciado": "<p>O zoológico deseja fazer um evento para apresentar suas N araras ao público em M gaiolas alinhadas. Araras gritam e assustam outras se estiverem a menos de 4 gaiolas de distância.</p><p>Sua tarefa é determinar se é possível distribuir as N araras entre as M gaiolas de modo que nenhum grito possa assustar outras araras (ou seja, existam pelo menos 4 gaiolas vazias entre quaisquer duas araras).</p>",
+  "entrada": "A entrada possui uma única linha contendo dois inteiros N e M indicando, respectivamente, o número de araras e o número de gaiolas.",
+  "saida": "Imprima 'S' se for possível realizar o evento, ou 'N' caso contrário.",
+  "restricoes": "<ul><li>1 &le; N &le; 1000</li><li>1 &le; M &le; 1000</li></ul>",
+  "exemplos": [
+    {
+      "input": "2 10",
+      "output": "S",
+      "explanation": null
+    },
+    {
+      "input": "3 10",
+      "output": "N",
+      "explanation": null
+    },
+    {
+      "input": "3 11",
+      "output": "S",
+      "explanation": null
+    }
+  ]
+}

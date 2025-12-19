@@ -1,0 +1,34 @@
+{
+  "titulo": "Café com Leite",
+  "slug": "leite",
+  "ano": 2025,
+  "fase": 1,
+  "nivel": "J",
+  "time_limit": 1000,
+  "enunciado": "<p>Felipe trabalha em uma cafeteria. Cada cliente possui uma xícara de capacidade C e prefere quantidades diferentes de leite.</p><p>O cliente indica o volume mínimo A e o volume máximo B de leite que deseja. A máquina prepara D mililitros de café. Felipe completa a xícara com leite (Volume Leite = C - D).</p><p>Sua tarefa é determinar se o volume de leite na bebida atenderá às preferências do cliente (se está entre A e B, inclusive).</p>",
+  "entrada": "A entrada possui quatro linhas, cada uma contendo um inteiro:\n1. Volume mínimo A de leite\n2. Volume máximo B de leite\n3. Capacidade C da xícara\n4. Volume D de café preparado",
+  "saida": "Imprima 'S' se Felipe conseguir satisfazer as preferências (A <= Leite <= B), ou 'N' caso contrário.",
+  "restricoes": "<ul><li>100 &le; C &le; 500</li><li>0 &le; A &le; B < C</li><li>10 &le; D &le; 100</li></ul>",
+  "exemplos": [
+    {
+      "input": "130\n150\n170\n30",
+      "output": "S",
+      "explanation": "A máquina faz 30ml de café. A xícara tem 170ml. Leite adicionado: 170 - 30 = 140ml. Como 140 está entre 130 e 150, a resposta é Sim."
+    },
+    {
+      "input": "220\n230\n240\n30",
+      "output": "N",
+      "explanation": "Leite = 240 - 30 = 210ml. O mínimo exigido era 220ml. Logo, não satisfaz."
+    },
+    {
+      "input": "0\n200\n300\n45",
+      "output": "N",
+      "explanation": null
+    },
+    {
+      "input": "120\n120\n200\n80",
+      "output": "S",
+      "explanation": null
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "titulo": "Sacolas",
+  "slug": "sacolas",
+  "ano": 2025,
+  "fase": 3,
+  "nivel": "J",
+  "time_limit": 1000,
+  "enunciado": "<p>Marcelo comprou N pacotes de carne com pesos P_i. Ele precisa levar tudo para casa usando o número mínimo de sacolas.</p><p>Regras:<ul><li>Cada sacola suporta peso máximo S.</li><li>Os pacotes em uma sacola devem ser um intervalo contíguo da sequência original.</li></ul></p>",
+  "entrada": "Linha 1: N e S.\nLinha 2: Pesos P_1 ... P_N.",
+  "saida": "O número mínimo de sacolas necessárias.",
+  "restricoes": "<ul><li>1 &le; N &le; 100.000</li><li>1 &le; S &le; 10^9</li><li>P_i &le; S</li></ul>",
+  "exemplos": [
+    {
+      "input": "6 6\n2 3 3 1 1 2",
+      "output": "3",
+      "explanation": "Sacola 1: {2} (soma 2). Sacola 2: {3, 3} (soma 6). Sacola 3: {1, 1, 2} (soma 4). Total 3 sacolas."
+    },
+    {
+      "input": "7 3\n1 1 1 1 1 1 1",
+      "output": "3",
+      "explanation": null
+    },
+    {
+      "input": "8 10\n6 3 4 5 2 7 3 5",
+      "output": "4",
+      "explanation": null
+    }
+  ]
+}
